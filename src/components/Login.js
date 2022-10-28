@@ -33,7 +33,7 @@ const Login = (props) => {
       setIsLogIn(false);
     }
     axios
-      .post("/user", {
+      .post("http://localhost:3001/user", {
         ...values,
       })
       .then((response) => {

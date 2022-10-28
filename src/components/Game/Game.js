@@ -367,13 +367,13 @@ class Game extends React.PureComponent {
 
     this.setState({ selected: value });
 
-    setTimeout(() => {
-      this.setState({
-        prev: this.state.next,
-        next: this.generateProblem(this.state.status.max),
-        selected: -1,
-      });
-    }, 1500);
+    // setTimeout(() => {
+    this.setState({
+      prev: this.state.next,
+      next: this.generateProblem(this.state.status.max),
+      selected: -1,
+    });
+    // }, 1500);
   };
 
   handleOnTimerEnd = () => {

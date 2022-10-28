@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import New from "./New";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import UserInfo from "./components/UserInfo";
 
 const store = createStore(ProductReducer);
 
@@ -22,7 +23,8 @@ ReactDOM.render(
           <Route path="/register" exact={true} component={Register} />
           <Route path="/login" exact={true} component={Login} />
           <Route path="/app" exact={true} component={App} />
-          <Route path="/" component={App} />
+          <Route path="/userInfo" exact={true} component={UserInfo} />
+          <Route path="/" component={Login} />
         </Switch>
       </Router>
     </Provider>
