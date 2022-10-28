@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import "antd/dist/antd.css";
-import { connect } from "react-redux";
-import { Form, Input, Button, Typography } from "antd";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { erLocalStorage } from "../store/erLocalStorage";
+import React, { useState } from 'react';
+import 'antd/dist/antd.css';
+import { connect } from 'react-redux';
+import { Form, Input, Button, Typography } from 'antd';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { erLocalStorage } from '../store/erLocalStorage';
 
 const { Text, Title } = Typography;
 const Login = (props) => {
@@ -27,18 +27,25 @@ const Login = (props) => {
   };
 
   const onFinish = (values) => {
-    if (values.password == "admin" && values.username == "admin") {
+    if (values.password == 'admin' && values.username == 'admin') {
       setIsLogIn(true);
     } else {
       setIsLogIn(false);
     }
-    axios
-      .post("http://localhost:3001/user", {
-        ...values,
-      })
-      .then((response) => {
-        erLocalStorage.setItem("/useInfo", response);
-        history.push("/app");
+    fetch('http://localhost:3001/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then(async (response) => {
+        const hello = await response.json();
+        console.log('hello: ', hello);
+        if (hello?.role) {
+          erLocalStorage.setJSONItem('useInfo', hello);
+          history.push('/app');
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -46,16 +53,30 @@ const Login = (props) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   return (
-    <div className="loginScreen" style={{ backgroundImage: `url("/images/background.jpg")`, display: "flex" }}>
-      <div style={{ maxWidth: "500px", margin: "auto", background: "white", padding: "2rem", borderRadius: "1rem" }}>
-        <h2 style={{ textAlign: "center" }}>Login to KIDSPAD</h2>
+    <div
+      className='loginScreen'
+      style={{
+        backgroundImage: `url("/images/background.jpg")`,
+        display: 'flex',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '500px',
+          margin: 'auto',
+          background: 'white',
+          padding: '2rem',
+          borderRadius: '1rem',
+        }}
+      >
+        <h2 style={{ textAlign: 'center' }}>Login to KIDSPAD</h2>
         <Form
           {...layout}
-          name="basic"
+          name='basic'
           initialValues={{
             remember: true,
           }}
@@ -63,35 +84,35 @@ const Login = (props) => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            name="email"
-            label="E-mail"
+            name='email'
+            label='E-mail'
             rules={[
               {
-                type: "email",
-                message: "The input is not valid E-mail!",
+                type: 'email',
+                message: 'The input is not valid E-mail!',
               },
               {
                 required: true,
-                message: "Please input your E-mail!",
+                message: 'Please input your E-mail!',
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Password"
-            name="password"
+            label='Password'
+            name='password'
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: 'Please input your password!',
               },
             ]}
           >
             <Input.Password />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type='primary' htmlType='submit'>
               Log In
             </Button>
           </Form.Item>
@@ -100,15 +121,19 @@ const Login = (props) => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button
-              type="default"
+              type='default'
               onClick={() => {
-                history.push("/register");
+                history.push('/register');
               }}
             >
               Sign Up
             </Button>
           </Form.Item>
-          {isLogIn == false && <Text type="danger">Please enter correct username and password</Text>}
+          {isLogIn == false && (
+            <Text type='danger'>
+              Please enter correct username and password
+            </Text>
+          )}
         </Form>
       </div>
     </div>

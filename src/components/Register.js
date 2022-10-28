@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Form, Input, Select } from "antd";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { erLocalStorage } from "../store/erLocalStorage";
 
 const { Option } = Select;
 
@@ -33,12 +34,20 @@ const Register = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    axios
-      .post("/user", {
-        ...values,
-      })
-      .then((response) => {
-        history.push("/app");
+    fetch('http://localhost:3001/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then(async (response) => {
+        const hello = await response.json();
+        console.log('hello: ', hello);
+        if (hello?.role) {
+          erLocalStorage.setJSONItem('useInfo', hello);
+          history.push('/app');
+        }
       })
       .catch((error) => {
         console.log(error);
