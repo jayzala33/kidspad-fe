@@ -3,6 +3,9 @@ import { Button } from "antd";
 import { connect } from "react-redux";
 import ProductList from "./ProductList";
 import AddProduct from "./AddProduct";
+import Game from "./Game/Game";
+import "./Game/Game.scss";
+// import "./styles/index.scss";
 
 const Main = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -22,22 +25,13 @@ const Main = (props) => {
 
   return (
     <div className="main">
-      {login ? (
-        <div>
-          <div className="logout">
-            <Button type="primary" danger onClick={logout}>
-              Log Out
-            </Button>
+      {!login ? (
+        <div className="loginScreen" style={{ backgroundImage: `url("/images/background.jpg")`, display: "flex" }}>
+          <div
+            style={{ maxWidth: "800px", margin: "auto", background: "white", padding: "2rem", borderRadius: "1rem" }}
+          >
+            <Game />
           </div>
-          <h1>Product Details</h1>
-          <div className="addProduct">
-            <Button type="primary" onClick={toggleAddUserModal}>
-              Add Product
-            </Button>
-          </div>
-          <ProductList />
-          {isModalVisible && <AddProduct visible={isModalVisible} toggleAddUserModal={toggleAddUserModal} />}
-          
         </div>
       ) : (
         <h2>Login required</h2>

@@ -22,6 +22,7 @@ ReactDOM.render(
           <Route path="/register" exact={true} component={Register} />
           <Route path="/login" exact={true} component={Login} />
           <Route path="/app" exact={true} component={App} />
+          <Route path="/" component={App} />
         </Switch>
       </Router>
     </Provider>
